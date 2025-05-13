@@ -1,21 +1,15 @@
 {
-  "name": "ubs-fila",
+  "name": "teste",
   "version": "1.0.0",
+  "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
-    "express": "^5.1.0",
-    "socket.io": "^4.8.1"
-    "dependencies": {
-  "bcrypt": "^5.0.1"
-      "engines": {
-  "node": "16.x"
+    "express": "^4.18.2",
+    "socket.io": "^4.8.1",
+    "bcrypt": "^5.0.1",
+    "jsonwebtoken": "^9.0.0"
   }
 }
