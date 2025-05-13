@@ -16,6 +16,67 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #555; }
         /* A classe 'hidden' do Tailwind será usada para controlar a visibilidade */
     </style>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Médico</title>
+</head>
+<body>
+    <h1>Gerenciamento de Usuários</h1>
+
+    <!-- Formulário para adicionar usuários -->
+    <form id="user-form">
+        <label for="username">Nome de usuário:</label>
+        <input type="text" id="username" name="username" required>
+        <br>
+
+        <label for="password">Senha:</label>
+        <input type="password" id="password" name="password" required>
+        <br>
+
+        <label for="role">Função:</label>
+        <select id="role" name="role" required>
+            <option value="medicos">Médico</option>
+            <option value="enfermeiras">Enfermeira</option>
+            <option value="outros">Outro</option>
+        </select>
+        <br>
+
+        <button type="submit">Adicionar Usuário</button>
+    </form>
+
+    <p id="response-message"></p>
+
+    <script>
+        // Captura o evento de envio do formulário
+        document.getElementById('user-form').addEventListener('submit', async (e) => {
+            e.preventDefault(); // Evita recarregar a página
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
+
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password, role })
+                });
+
+                const result = await response.text();
+                document.getElementById('response-message').innerText = result;
+
+                // Limpa o formulário após o sucesso
+                if (response.ok) {
+                    document.getElementById('username').value = '';
+                    document.getElementById('password').value = '';
+                    document.getElementById('role').value = 'medicos';
+                }
+            } catch (error) {
+                document.getElementById('response-message').innerText = 'Erro ao adicionar usuário.';
+                console.error(error);
+            }
+        });
 </head>
 <body class="min-h-screen p-4 md:p-8 flex items-center justify-center">
     <div class="container mx-auto w-full max-w-4xl">
