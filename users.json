@@ -1,0 +1,5 @@
+{
+  "medicos": ["Alexander", "Lucas", "Alberto"],
+  "enfermeiras": ["Fernanda", "Thais", "Ivani"],
+  "outros": ["Vacina", "Triagem"]
+}
