@@ -1,16 +1,19 @@
 {
   "medicos": [
-    { "username": "Alexander", "password": "$2b$10$hash_da_senha" },
-    { "username": "Lucas", "password": "$2b$10$hash_da_senha" },
-    { "username": "Alberto", "password": "$2b$10$hash_da_senha" }
+    {
+      "username": "Alexander",
+      "password": "$2b$10$eImG7vUtZr1kH1j8tZt7Oe6xE8FqX8m4Xf4kzzv9tJZCqvQW2R6Oi"
+    },
+    {
+      "username": "Lucas",
+      "password": "$2b$10$eImG7vUtZr1kH1j8tZt7Oe6xE8FqX8m4Xf4kzzv9tJZCqvQW2R6Oi"
+    }
   ],
-  "enfermeiras": [
-    { "username": "Fernanda", "password": "$2b$10$hash_da_senha" },
-    { "username": "Thais", "password": "$2b$10$hash_da_senha" },
-    { "username": "Ivani", "password": "$2b$10$hash_da_senha" }
-  ],
+  "enfermeiras": [],
   "outros": [
-    { "username": "Vacina", "password": "$2b$10$hash_da_senha" },
-    { "username": "Triagem", "password": "$2b$10$hash_da_senha" }
+    {
+      "username": "Vacina",
+      "password": "$2b$10$eImG7vUtZr1kH1j8tZt7Oe6xE8FqX8m4Xf4kzzv9tJZCqvQW2R6Oi"
+    }
   ]
 }
