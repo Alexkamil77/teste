@@ -1,5 +1,16 @@
 {
-  "medicos": ["Alexander", "Lucas", "Alberto"],
-  "enfermeiras": ["Fernanda", "Thais", "Ivani"],
-  "outros": ["Vacina", "Triagem"]
+  "medicos": [
+    { "username": "Alexander", "password": "$2b$10$hash_da_senha" },
+    { "username": "Lucas", "password": "$2b$10$hash_da_senha" },
+    { "username": "Alberto", "password": "$2b$10$hash_da_senha" }
+  ],
+  "enfermeiras": [
+    { "username": "Fernanda", "password": "$2b$10$hash_da_senha" },
+    { "username": "Thais", "password": "$2b$10$hash_da_senha" },
+    { "username": "Ivani", "password": "$2b$10$hash_da_senha" }
+  ],
+  "outros": [
+    { "username": "Vacina", "password": "$2b$10$hash_da_senha" },
+    { "username": "Triagem", "password": "$2b$10$hash_da_senha" }
+  ]
 }
