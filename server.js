@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
+const bcrypt = require('bcryptjs');
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
