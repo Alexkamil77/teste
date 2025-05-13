@@ -11,7 +11,54 @@ const io = socketIo(server, {
         methods: ["GET", "POST"]
     }
 });
+const express = require('express');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
+const app = express();
+app.use(express.json());
+
+const users = []; // Temporário; use um banco de dados em produção.
+
+app.post('/register', async (req, res) => {
+  const { username, password, role } = req.body;
+
+  // Hash da senha
+  const hashedPassword = await bcrypt.hash(password, 10);
+  users.push({ username, password: hashedPassword, role });
+
+  res.status(201).send('Usuário registrado com sucesso!');
+});
+
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+  const user = users.find(u => u.username === username);
+
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    return res.status(401).send('Credenciais inválidas');
+  }
+
+  // Geração do JWT
+  const token = jwt.sign({ username: user.username, role: user.role }, 'secret_key', { expiresIn: '1h' });
+  res.json({ token });
+});
+
+// Rota protegida
+app.get('/dashboard', (req, res) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader) return res.status(401).send('Token não fornecido');
+
+  const token = authHeader.split(' ')[1];
+  try {
+    const decoded = jwt.verify(token, 'secret_key');
+    res.json({ message: `Bem-vindo, ${decoded.username}!`, role: decoded.role });
+  } catch {
+    res.status(403).send('Token inválido');
+  }
+});
+
+app.listen(3000, () => console.log('Servidor rodando na porta 3000'));
 // Servir arquivos estáticos da pasta 'public'
 app.use(express.static(path.join(__dirname, 'public')));
 
