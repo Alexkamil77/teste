@@ -1,3 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sala de Espera</title>
+    <script>
+        // Função para anunciar o nome do paciente
+        function announcePatient(patientName) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(`Paciente ${patientName}, por favor, dirija-se ao atendimento.`);
+                utterance.lang = 'pt-BR'; // Configurar para português brasileiro
+                utterance.pitch = 1; // Tom de voz (1 é natural)
+                utterance.rate = 1; // Velocidade (1 é normal)
+                utterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'pt-BR' && voice.name.includes('feminina')) || null;
+                speechSynthesis.speak(utterance);
+            } else {
+                alert('Seu navegador não suporta a API de síntese de voz.');
+            }
+        }
+
+        // Exemplo: Simula o evento de um paciente chamado
+        document.addEventListener('DOMContentLoaded', () => {
+            const socket = io();
+
+            // Ouve o evento do servidor para quando um paciente é chamado
+            socket.on('patient_called', (data) => {
+                if (data && data.name) {
+                    announcePatient(data.name); // Chama a função para anunciar o paciente
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Sala de Espera</h1>
+    <p>Os pacientes serão chamados em breve...</p>
+
+    <!-- Importa o Socket.IO -->
+    <script src="/socket.io/socket.io.js"></script>
+</body>
+</html>
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
