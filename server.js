@@ -27,7 +27,7 @@ app.post('/register', async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, 10);
   users.push({ username, password: hashedPassword, role });
 
-  res.status(201).send('Usuário registrado com sucesso!');
+  res.status(201).send('Usuár registrado com sucesso!');
 });
 
 app.post('/login', async (req, res) => {
@@ -45,7 +45,7 @@ app.post('/login', async (req, res) => {
 
 // Rota protegida
 app.get('/dashboard', (req, res) => {
-  const authHeader = req.headers.authorization;
+  const authHeader = req.headers.authorizatn;
 
   if (!authHeader) return res.status(401).send('Token não fornecido');
 
@@ -66,10 +66,10 @@ let patientQueue = []; // Fila de pacientes na memória do servidor
 let currentlyCallingPatient = null; // Paciente sendo chamado no momento
 // Alterado para armazenar a URL COMPLETA da playlist ou null
 let youtubePlaylistUrl = null;
-let connectedProfessionals = {}; // Para rastrear profissionais conectados: { socketId: { name: 'Nome', role: 'Role' } }
+let connectedProfessnals = {}; // Para rastrear profissnais conectados: { socketId: { name: 'Nome', role: 'Role' } }
 
 
-io.on('connection', (socket) => {
+.on('connectn', (socket) => {
     console.log('Novo cliente conectado:', socket.id);
 
     // --- Lógica de Conexão e Estado Inicial ---
@@ -79,11 +79,11 @@ io.on('connection', (socket) => {
         calling: currentlyCallingPatient,
         // Envia a URL da playlist
         playlistUrl: youtubePlaylistUrl,
-        professionals: Object.values(connectedProfessionals)
+        professnals: Object.values(connectedProfessnals)
     });
 
-    // --- Eventos do Profissional (Médico/Enfermeira) ---
-    socket.on('professional_login', (professionalInfo) => {
+    // --- Eventos do Profissnal (Médico/Enfermeira) ---
+    socket.on('professnal_login', (professnalInfo) => {
          if (!professionalInfo || !professionalInfo.name || !professionalInfo.role) {
              socket.emit('error_message', 'Informações de login inválidas.');
              return;
@@ -99,9 +99,10 @@ io.on('connection', (socket) => {
             delete connectedProfessionals[socket.id];
             console.log(`Profissional "${professionalInfo.name}" (${professionalInfo.role}) deslogado (ID: ${socket.id}).`);
             io.emit('professional_list_updated', Object.values(connectedProfessionals));
-
+            io.emit('patient_called', currentlyCallingPatient);
             if (currentlyCallingPatient && currentlyCallingPatient.calledBySocketId === socket.id) {
                 currentlyCallingPatient = null;
+              
                 io.emit('call_stopped');
                 console.log(`Chamada parada pois o profissional "${professionalInfo.name}" deslogou.`);
             }
