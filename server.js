@@ -24,7 +24,7 @@ try {
     users = JSON.parse(fs.readFileSync('users.json', 'utf-8'));
 } catch (err) {
     console.error('Erro ao carregar o arquivo users.json:', err);
-    process.exit(1);
+    users = { medicos: [], enfermeiras: [], outros: [] }; // Inicializa se o arquivo não existir
 }
 
 // --- ROTAS DE AUTENTICAÇÃO ---
@@ -54,6 +54,41 @@ app.post('/login', async (req, res) => {
     // Geração do JWT
     const token = jwt.sign({ username: user.username }, 'secret_key', { expiresIn: '1h' });
     res.json({ token });
+});
+
+// Rota para registrar novos usuários
+app.post('/register', async (req, res) => {
+    const { username, password, role } = req.body;
+
+    if (!username || !password || !role) {
+        return res.status(400).send('Todos os campos são obrigatórios.');
+    }
+
+    if (!users[role]) {
+        return res.status(400).send('Função inválida.');
+    }
+
+    // Hash da senha
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Verifica se o usuário já existe
+    const existingUserIndex = users[role].findIndex(u => u.username === username);
+    if (existingUserIndex !== -1) {
+        // Atualiza a senha do usuário existente
+        users[role][existingUserIndex].password = hashedPassword;
+    } else {
+        // Adiciona um novo usuário
+        users[role].push({ username, password: hashedPassword });
+    }
+
+    // Atualiza o arquivo users.json
+    try {
+        fs.writeFileSync('users.json', JSON.stringify(users, null, 2));
+        res.status(201).send('Usuário registrado com sucesso!');
+    } catch (err) {
+        console.error('Erro ao atualizar o arquivo users.json:', err);
+        res.status(500).send('Erro ao registrar o usuário.');
+    }
 });
 
 // Rota protegida (exemplo)
